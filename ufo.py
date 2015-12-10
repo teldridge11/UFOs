@@ -285,7 +285,6 @@ def e_fireShell(xy,UFOx,UFOy,turPos,gun_power,xlocation,barrier_width,randomHeig
             if check_x_1 and check_x_2 and check_y_1 and check_y_2:
                 hit_x = int((startingShell[0]))
                 hit_y = int(startingShell[1])
-                #explosion(hit_x,hit_y)
                 fire = False
     
     fire = True
