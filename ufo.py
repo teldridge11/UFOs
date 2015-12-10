@@ -216,16 +216,12 @@ def fireShell(xy,UFOx,UFOy,turPos,gun_power,xlocation,barrier_width,randomHeight
             hit_y = int(display_height-ground_height)
             
             if enemyUFOX + 10 > hit_x > enemyUFOX - 10:
-                print("Critical Hit!")
                 damage = 25
             elif enemyUFOX + 15 > hit_x > enemyUFOX - 15:
-                print("Hard Hit!")
                 damage = 18
             elif enemyUFOX + 25 > hit_x > enemyUFOX - 25:
-                print("Medium Hit")
                 damage = 10
             elif enemyUFOX + 35 > hit_x > enemyUFOX - 35:
-                print("Light Hit")
                 damage = 5          
             
             explosion(hit_x,hit_y)
