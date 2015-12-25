@@ -4,12 +4,13 @@ import random
 
 pygame.init()
 
+# Display
 display_width = 800
 display_height = 600
-
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('UFOs')
 
+# Colors
 black = (0,0,0)
 blue = (0,0,255)
 red = (200,0,0)
@@ -18,27 +19,33 @@ yellow = (200,200,0)
 light_yellow = (255,255,0)
 green = (34,177,76)
 light_green = (0,255,0)
-
 purple = (100,0,100)
 pink = (200,0,50)
 light_purple = (150,20,70)
 
+# Clock
 clock = pygame.time.Clock()
 
+# UFO
 UFOWidth = 40
 UFOHeight = 20
 turretWidth = 5
 wheelWidth = 5
+
+# Environment
 ground_height = 35
 
+# Fonts
 smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("comicsansms", 85)
 
+# Display Score
 def score(score):
     text = smallfont.render("Score: "+str(score), True, blue)
     gameDisplay.blit(text, [0,0])
 
+# Font Sizes
 def text_objects(text, color,size = "small"):
     if size == "small":
         textSurface = smallfont.render(text, True, color)
@@ -48,16 +55,19 @@ def text_objects(text, color,size = "small"):
         textSurface = largefont.render(text, True, color)
     return textSurface, textSurface.get_rect()
 
+# Display text on a button
 def text_to_button(msg, color, buttonx, buttony, buttonwidth, buttonheight, size = "small"):
     textSurf, textRect = text_objects(msg,color,size)
     textRect.center = ((buttonx+(buttonwidth/2)), buttony+(buttonheight/2))
     gameDisplay.blit(textSurf, textRect)
    
+# Display message to screen
 def message_to_screen(msg,color, y_displace = 0, size = "small"):
     textSurf, textRect = text_objects(msg,color,size)
     textRect.center = (int(display_width / 2), int(display_height / 2)+y_displace)
     gameDisplay.blit(textSurf, textRect)
 
+# Display UFO
 def UFO(x,y,turPos):
     x = int(x)
     y = int(y)
@@ -79,6 +89,7 @@ def UFO(x,y,turPos):
 
     return possibleTurrets[turPos]
 
+# Display Enemy UFO
 def enemy_UFO(x,y,turPos):
     x = int(x)
     y = int(y)
@@ -100,6 +111,7 @@ def enemy_UFO(x,y,turPos):
 
     return possibleTurrets[turPos]
 
+# Game Controls
 def game_controls():
     gcont = True
 
@@ -123,6 +135,7 @@ def game_controls():
         pygame.display.update()
         clock.tick(15)
 
+# Button Events
 def button(text, x, y, width, height, inactive_color, active_color, action = None):
     cur = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
@@ -145,6 +158,7 @@ def button(text, x, y, width, height, inactive_color, active_color, action = Non
 
     text_to_button(text,black,x,y,width,height)
 
+# Pause Game
 def pause():
     paused = True
     message_to_screen("Paused",purple,-100,size="large")
@@ -166,9 +180,11 @@ def pause():
 
         clock.tick(15)
 
+# Random Barrier Placement
 def barrier(xlocation,randomHeight, barrier_width): 
     pygame.draw.rect(gameDisplay, blue, [xlocation, display_height-randomHeight, barrier_width,randomHeight])
     
+# Display Explosion
 def explosion(x, y, size=50):
     explode = True
 
@@ -194,6 +210,7 @@ def explosion(x, y, size=50):
 
         explode = False       
 
+# Fire Gun
 def fireShell(xy,UFOx,UFOy,turPos,gun_power,xlocation,barrier_width,randomHeight,enemyUFOX, enemyUFOY):
     fire = True
     damage = 0
@@ -335,10 +352,12 @@ def e_fireShell(xy,UFOx,UFOy,turPos,gun_power,xlocation,barrier_width,randomHeig
         clock.tick(100)
     return damage
 
+# Display Gun Power Level
 def power(level):
     text = smallfont.render("Power: "+str(level)+"%",True, blue)
     gameDisplay.blit(text, [display_width/2,0])
 
+# Display Game Intro and events
 def game_intro():
 
     intro = True
@@ -367,6 +386,7 @@ def game_intro():
         pygame.display.update()
         clock.tick(15)
 
+# Display Game Over and Events
 def game_over():
     game_over = True
 
@@ -387,6 +407,7 @@ def game_over():
         pygame.display.update()
         clock.tick(15)
 
+# Display You Win and Events
 def you_win():
     win = True
 
@@ -407,6 +428,7 @@ def you_win():
         pygame.display.update()
         clock.tick(15)
 
+# Display Health Bars
 def health_bars(player_health, enemy_health):
     if player_health > 75:
         player_health_color = green
@@ -425,6 +447,7 @@ def health_bars(player_health, enemy_health):
     pygame.draw.rect(gameDisplay, player_health_color, (680, 25, player_health, 25))
     pygame.draw.rect(gameDisplay, enemy_health_color, (20, 25, enemy_health, 25))
 
+# Main Game Loop
 def gameLoop():
     gameExit = False
     gameOver = False
