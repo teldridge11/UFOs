@@ -449,30 +449,39 @@ def health_bars(player_health, enemy_health):
 
 # Main Game Loop
 def gameLoop():
+    
+    # Game Is Running
     gameExit = False
     gameOver = False
+    
+    # Clock
     FPS = 15
 
+    # Initialize Health
     player_health = 100
     enemy_health = 100
 
+    # Initialize Environment
     barrier_width = 50
+    randomHeight = random.randrange(display_height*0.1,display_height*0.6)
+    xlocation = (display_width/2) + random.randint(-0.1*display_width, 0.1*display_width) 
 
+    # UFO
     mainUFOX = display_width * 0.9
     mainUFOY = display_height * 0.9
     UFOMove = 0
     currentTurPos = 0
     changeTur = 0
 
+    # Enemy UFO
     enemyUFOX = display_width * 0.1
     enemyUFOY = display_height * 0.9 
 
+    # Initialize Power
     fire_power = 50
     power_change = 0
-
-    xlocation = (display_width/2) + random.randint(-0.1*display_width, 0.1*display_width) 
-    randomHeight = random.randrange(display_height*0.1,display_height*0.6)
   
+    # Display Game Over
     while not gameExit:     
         if gameOver == True:
             message_to_screen("Game Over",red,-50,size="large")
@@ -490,10 +499,12 @@ def gameLoop():
                             gameExit = True
                             gameOver = False
 
+        # Quit
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 gameExit = True
 
+            # UFO Controls
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                       UFOMove = -5                
@@ -509,9 +520,9 @@ def gameLoop():
                     damage = fireShell(gun,mainUFOX,mainUFOY,currentTurPos,fire_power,xlocation,barrier_width,randomHeight,enemyUFOX,enemyUFOY)
                     enemy_health -= damage
 
+                    # Enemy UFO Randomness
                     possibleMovement = ['f','r']
                     moveIndex = random.randrange(0,2)
-
                     for x in range(random.randrange(0,10)):
                         if display_width * 0.3 > enemyUFOX > display_width * 0.03:
                             if possibleMovement[moveIndex] == "f":
@@ -519,16 +530,26 @@ def gameLoop():
                             elif possibleMovement[moveIndex] == "r":
                                 enemyUFOX -= 5
 
+                            # Clear screen for new frame
                             gameDisplay.fill(black)
+                            
+                            # Update Health Bars
                             health_bars(player_health,enemy_health)
+                            
+                            # Update Gun Characteristics
                             gun = UFO(mainUFOX,mainUFOY,currentTurPos)
                             enemy_gun = enemy_UFO(enemyUFOX, enemyUFOY, 8)
                             fire_power += power_change
                             power(fire_power)
+                            
+                            # Update Environment
                             barrier(xlocation,randomHeight,barrier_width)
                             gameDisplay.fill(blue, rect=[0, display_height-ground_height, display_width, ground_height])
-
+                            
+                            # Update Display With Changes
                             pygame.display.update()
+                            
+                            # Clock Tick
                             clock.tick(FPS)
                     
                     damage = e_fireShell(enemy_gun,enemyUFOX,enemyUFOY,8,50,xlocation,barrier_width,randomHeight,mainUFOX,mainUFOY)
