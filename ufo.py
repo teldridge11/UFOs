@@ -552,14 +552,17 @@ def gameLoop():
                             # Clock Tick
                             clock.tick(FPS)
                     
+                    # Update Health From Damage
                     damage = e_fireShell(enemy_gun,enemyUFOX,enemyUFOY,8,50,xlocation,barrier_width,randomHeight,mainUFOX,mainUFOY)
                     player_health -= damage
-                    
+                
+                # Power Change Controls    
                 elif event.key == pygame.K_a:
                     power_change = -1
                 elif event.key == pygame.K_d:
                     power_change = 1
 
+            # Allow quick key change (with finger still on another key)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     UFOMove = 0
@@ -570,37 +573,55 @@ def gameLoop():
                 if event.key == pygame.K_a or event.key == pygame.K_d:
                     power_change = 0
         
+        # Update UFO Position
         mainUFOX += UFOMove
         currentTurPos += changeTur
 
+        # Limit Turret Position Range
         if currentTurPos > 8:
             currentTurPos = 8
         elif currentTurPos < 0:
             currentTurPos = 0
 
+        # Limit UFO Movement Range
         if mainUFOX - (UFOWidth/2) < xlocation+barrier_width:
             mainUFOX += 5            
 
+        # Clean Game Display
         gameDisplay.fill(black)
+        
+        # Display Health Bars
         health_bars(player_health,enemy_health)
+        
+        # Display Gun Positions
         gun = UFO(mainUFOX,mainUFOY,currentTurPos)
-        enemy_gun = enemy_UFO(enemyUFOX, enemyUFOY, 8)        
+        enemy_gun = enemy_UFO(enemyUFOX, enemyUFOY, 8) 
+        
+        # Update Fire Power and Keep Within Range
         fire_power += power_change
-
         if fire_power > 100:
             fire_power = 100
         elif fire_power < 1:
             fire_power = 1   
-
         power(fire_power)
+        
+        
+        # Draw Barrier
         barrier(xlocation,randomHeight,barrier_width)
+        
+        # Draw Ground
         gameDisplay.fill(blue, rect=[0, display_height-ground_height, display_width, ground_height])
+        
+        # Update Display
         pygame.display.update()
 
+        # Player Health Events
         if player_health < 1:
             game_over()
         elif enemy_health < 1:
             you_win()
+            
+        # Clock Tick
         clock.tick(FPS)
 
     pygame.quit()
